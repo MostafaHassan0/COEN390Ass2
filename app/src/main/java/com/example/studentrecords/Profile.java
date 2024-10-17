@@ -1,11 +1,11 @@
 package com.example.studentrecords;
 
 public class Profile {
-    private int profileId;
-    private String name;
-    private String surname;
-    private float gpa;
-    private String created;
+    private final int profileId;
+    private final String name;
+    private final String surname;
+    private final float gpa;
+    private final String created;
 
     public Profile(int profileId, String name, String surname, float gpa, String created) {
         this.profileId = profileId;

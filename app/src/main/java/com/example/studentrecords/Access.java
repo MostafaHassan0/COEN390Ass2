@@ -1,8 +1,8 @@
 package com.example.studentrecords;
 
 public class Access {
-    private String accessType;
-    private String timestamp;
+    private final String accessType;
+    private final String timestamp;
 
     public Access(String accessType, String timestamp) {
         this.accessType = accessType;

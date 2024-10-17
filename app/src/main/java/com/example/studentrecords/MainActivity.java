@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            Profile profile = (Profile) adapter.getItem(position);
+            Profile profile = adapter.getItem(position);
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             intent.putExtra("profileId", profile.getProfileId());
             startActivity(intent);
@@ -66,10 +66,12 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ProfileAdapter(this, profiles,Nametoggle);
         listView.setAdapter(adapter);
         if (Nametoggle) {
-        infoTextView.setText(profiles.size() + " Profiles, by Surname");
+            if (profiles.size() == 1) { infoTextView.setText(profiles.size() + " Profile, by Surname");}
+            else {infoTextView.setText(profiles.size() + " Profiles, by Surname");}
         }
         else {
-            infoTextView.setText(profiles.size() + " Profiles, by ID");
+            if (profiles.size() == 1) { infoTextView.setText(profiles.size() + " Profile, by ID");}
+            else {infoTextView.setText(profiles.size() + " Profiles, by ID");}
         }
     }
 

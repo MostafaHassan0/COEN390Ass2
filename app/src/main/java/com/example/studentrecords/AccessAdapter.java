@@ -10,8 +10,8 @@ import android.widget.TextView;
 import java.util.List;
 
 public class AccessAdapter extends ArrayAdapter<Access> {
-    private Context context;
-    private List<Access> accessList;
+    private final Context context;
+    private final List<Access> accessList;
 
     public AccessAdapter(Context context, List<Access> accessList) {
         super(context, 0, accessList);

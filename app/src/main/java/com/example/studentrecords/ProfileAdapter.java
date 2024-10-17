@@ -13,9 +13,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ProfileAdapter extends ArrayAdapter<Profile> {
-    private Context context;
-    private List<Profile> profiles;
-    private boolean Nametoggle;
+    private final Context context;
+    private final List<Profile> profiles;
+    private final boolean Nametoggle;
 
     public ProfileAdapter(Context context, List<Profile> profiles, boolean Nametoggle) {
         super(context, 0, profiles);
@@ -66,7 +66,7 @@ public class ProfileAdapter extends ArrayAdapter<Profile> {
         }
         else {
             TextView text1 = convertView.findViewById(android.R.id.text1);
-            text1.setText(String.valueOf((position+1) + ". " +profile.getProfileId()));
+            text1.setText((position + 1) + ". " + profile.getProfileId());
         }
 
         return convertView;

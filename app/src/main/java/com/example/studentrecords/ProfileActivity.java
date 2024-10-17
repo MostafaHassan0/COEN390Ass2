@@ -1,5 +1,8 @@
 package com.example.studentrecords;
 
+import static android.app.PendingIntent.getActivity;
+
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -11,11 +14,12 @@ import androidx.core.view.WindowInsetsCompat;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
-    private TextView userTextView, accessTextView;
+    private TextView userTextView;
     private ListView historyListView;
     private Button deleteButton;
     private DatabaseHelper dbHelper;
@@ -27,7 +31,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         userTextView = findViewById(R.id.UsertextView);
-        accessTextView = findViewById(R.id.AccesstextView);
         historyListView = findViewById(R.id.historyListView);
         deleteButton = findViewById(R.id.delete_button);
 
@@ -38,9 +41,18 @@ public class ProfileActivity extends AppCompatActivity {
         loadAccessHistory(profileId);
 
         deleteButton.setOnClickListener(v -> {
-            dbHelper.addAccess(profileId, "Deleted");
-            dbHelper.deleteProfile(profileId);
-            finish();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this); // Create a dialog to confirm reset
+            builder.setTitle("Delete Profile"); // Set the title of the dialog
+            builder.setMessage("Are you sure you want to delete "+ profileId +"'s profile?"); // Set the message of the dialog
+            builder.setPositiveButton("Yes", (dialog, which) -> { // Set the positive button of the dialog
+                dbHelper.addAccess(profileId, "Deleted");
+                dbHelper.deleteProfile(profileId);
+                Toast.makeText(this, "Profile Deleted!", Toast.LENGTH_SHORT).show();
+                finish();
+            });
+            builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss()); // Set the negative button of the dialog
+            builder.show();
+
         });
 
         if (getSupportActionBar() != null) {
