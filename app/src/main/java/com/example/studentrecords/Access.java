@@ -1,5 +1,7 @@
 package com.example.studentrecords;
 
+
+// This Class is to hold the data for the access history in a form of an object
 public class Access {
     private final String accessType;
     private final String timestamp;
