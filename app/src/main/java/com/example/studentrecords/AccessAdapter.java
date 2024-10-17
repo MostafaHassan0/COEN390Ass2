@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+// This Class is to adapt the access history to display on the list view
 public class AccessAdapter extends ArrayAdapter<Access> {
     private final Context context;
     private final List<Access> accessList;

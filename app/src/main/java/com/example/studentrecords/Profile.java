@@ -1,5 +1,6 @@
 package com.example.studentrecords;
 
+// Class to store the profile data as an object
 public class Profile {
     private final int profileId;
     private final String name;
