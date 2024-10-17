@@ -55,23 +55,29 @@ public class InsertProfileDialogFragment extends DialogFragment {
     }
 
     private void saveProfile() {
-        String name = nameEditText.getText().toString();
-        String surname = surnameEditText.getText().toString();
-        int profileId = Integer.parseInt(sidEditText.getText().toString());
-        float gpa = Float.parseFloat(gpaEditText.getText().toString());
 
-        if (!name.isEmpty() && !surname.isEmpty() && profileId > 0 && gpa >= 0 && gpa <= 4.3) {
-            if (dbHelper.getProfile(profileId) == null) { // checking if profileid already existes in db
-                Profile profile = new Profile(profileId, name, surname, gpa);
-                dbHelper.addProfile(profile);
-                Toast.makeText(getActivity(), "Profile saved!", Toast.LENGTH_SHORT).show();
-                ((MainActivity) getActivity()).loadProfiles();
-                dismiss();
+        if (!nameEditText.getText().toString().isEmpty() && !surnameEditText.getText().toString().isEmpty() && !sidEditText.getText().toString().isEmpty() && !gpaEditText.getText().toString().isEmpty()) {
+
+            String name = nameEditText.getText().toString();
+            String surname = surnameEditText.getText().toString();
+            int profileId = Integer.parseInt(sidEditText.getText().toString());
+            float gpa = Float.parseFloat(gpaEditText.getText().toString());
+
+            if (profileId > 0 && gpa >= 0 && gpa <= 4.3) {
+                if (dbHelper.getProfile(profileId) == null) { // checking if profileid already existes in db
+                    Profile profile = new Profile(profileId, name, surname, gpa);
+                    dbHelper.addProfile(profile);
+                    Toast.makeText(getActivity(), "Profile saved!", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).loadProfiles();
+                    dismiss();
+                } else {
+                    Toast.makeText(getActivity(), "Student ID already exists!", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(getActivity(), "Student ID already exists!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Invalid data!", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(getActivity(), "Invalid data!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please fill all fields!", Toast.LENGTH_SHORT).show();
         }
     }
 }
