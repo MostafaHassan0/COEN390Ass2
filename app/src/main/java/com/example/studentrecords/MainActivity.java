@@ -2,14 +2,13 @@ package com.example.studentrecords;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private TextView infoTextView;
     private ProfileAdapter adapter;
+    private static boolean Nametoggle = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +57,30 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadProfiles() {
         List<Profile> profiles = dbHelper.getAllProfiles();
-        adapter = new ProfileAdapter(this, profiles);
+        adapter = new ProfileAdapter(this, profiles,Nametoggle);
         listView.setAdapter(adapter);
-        infoTextView.setText("Total profiles: " + profiles.size());
+        if (Nametoggle) {
+        infoTextView.setText(profiles.size() + " Profiles, by Surname");
+        }
+        else {
+            infoTextView.setText(profiles.size() + " Profiles, by ID");
+        }
     }
 
-    public void addAccessTimestamp(int profileId, String accessType) {
-        dbHelper.addAccess(profileId, accessType);
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu); // Inflate the menu to appear in the action bar
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.Toggle_Listing) {
+            Nametoggle = !Nametoggle;
+            loadProfiles();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -42,6 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put("Surname", profile.getSurname());
         values.put("GPA", profile.getGpa());
         db.insert("Profile", null, values);
+        this.addAccess(profile.getProfileId(), "Created");
     }
 
     public Profile getProfile(int profileId) {
