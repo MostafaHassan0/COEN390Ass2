@@ -1,5 +1,6 @@
 package com.example.studentrecords;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -10,36 +11,58 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
-    FloatingActionButton add_button;
-    TextView infotextView;
-    ListView Profiles_listView;
+    private ListView listView;
+    private FloatingActionButton fab;
+    private DatabaseHelper dbHelper;
+    private TextView infoTextView;
+    private ProfileAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        if (getSupportActionBar() != null) { // Check if the action bar is there in the first place to prevent crashing
-            getSupportActionBar().setTitle("Main Activity");
-        }
+        listView = findViewById(R.id.Profiles_listView);
+        fab = findViewById(R.id.add_button);
+        infoTextView = findViewById(R.id.infotextView);
 
-        add_button = findViewById(R.id.add_button);
-        infotextView = findViewById(R.id.infotextView);
-        Profiles_listView = findViewById(R.id.Profiles_listView);
+        dbHelper = new DatabaseHelper(this);
 
-        add_button.setOnClickListener(v -> {
+        loadProfiles();  // Load profiles from the database
+
+        fab.setOnClickListener(v -> {
             new InsertProfileDialogFragment().show(getSupportFragmentManager(), "InsertProfile");
         });
 
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Profile profile = (Profile) adapter.getItem(position);
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            intent.putExtra("profileId", profile.getProfileId());
+            startActivity(intent);
+           // addAccessTimestamp(profile.getProfileId(), "Opened");
+        });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadProfiles();
+    }
+
+    public void loadProfiles() {
+        List<Profile> profiles = dbHelper.getAllProfiles();
+        adapter = new ProfileAdapter(this, profiles);
+        listView.setAdapter(adapter);
+        infoTextView.setText("Total profiles: " + profiles.size());
+    }
+
+    public void addAccessTimestamp(int profileId, String accessType) {
+        dbHelper.addAccess(profileId, accessType);
     }
 }
