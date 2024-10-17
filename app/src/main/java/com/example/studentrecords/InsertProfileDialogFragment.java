@@ -42,13 +42,9 @@ public class InsertProfileDialogFragment extends DialogFragment {
         gpaEditText = view.findViewById(R.id.editTextGPA);
         saveButton = view.findViewById(R.id.Save_button);
         cancelButton = view.findViewById(R.id.Cancel_button);
-//
-//
+
         saveButton.setOnClickListener(v -> saveProfile());
         cancelButton.setOnClickListener(v -> dismiss());
-
-
-
 
 
         return builder.create();
@@ -65,7 +61,7 @@ public class InsertProfileDialogFragment extends DialogFragment {
 
             if (profileId > 0 && gpa >= 0 && gpa <= 4.3) {
                 if (dbHelper.getProfile(profileId) == null) { // checking if profileid already existes in db
-                    Profile profile = new Profile(profileId, name, surname, gpa);
+                    Profile profile = new Profile(profileId, name, surname, gpa , dbHelper.getDateFormat());
                     dbHelper.addProfile(profile);
                     Toast.makeText(getActivity(), "Profile saved!", Toast.LENGTH_SHORT).show();
                     ((MainActivity) getActivity()).loadProfiles();
@@ -74,7 +70,7 @@ public class InsertProfileDialogFragment extends DialogFragment {
                     Toast.makeText(getActivity(), "Student ID already exists!", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getActivity(), "Invalid data!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Invalid Student ID and/or GPA", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(getActivity(), "Please fill all fields!", Toast.LENGTH_SHORT).show();

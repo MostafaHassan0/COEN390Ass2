@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createProfileTable = "CREATE TABLE Profile (ProfileID INTEGER PRIMARY KEY, Name TEXT, Surname TEXT, GPA REAL)";
+        String createProfileTable = "CREATE TABLE Profile (ProfileID INTEGER PRIMARY KEY, Name TEXT, Surname TEXT, GPA REAL, Created TEXT)";
         String createAccessTable = "CREATE TABLE Access (AccessID INTEGER PRIMARY KEY, ProfileID INTEGER, AccessType TEXT, Timestamp TEXT)";
         db.execSQL(createProfileTable);
         db.execSQL(createAccessTable);
@@ -37,10 +37,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void addProfile(Profile profile) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        String currentTimestamp = getDateFormat();
         values.put("ProfileID", profile.getProfileId());
         values.put("Name", profile.getName());
         values.put("Surname", profile.getSurname());
         values.put("GPA", profile.getGpa());
+        values.put("Created", currentTimestamp);
         db.insert("Profile", null, values);
         this.addAccess(profile.getProfileId(), "Created");
     }
@@ -52,33 +54,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             String name = cursor.getString(cursor.getColumnIndex("Name"));
             String surname = cursor.getString(cursor.getColumnIndex("Surname"));
             float gpa = cursor.getFloat(cursor.getColumnIndex("GPA"));
+            String created = cursor.getString(cursor.getColumnIndex("Created"));
             cursor.close();
-            return new Profile(profileId, name, surname, gpa);
+            return new Profile(profileId, name, surname, gpa, created);
         }
         return null;
     }
 
-    public String getCreated(int profileId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String createdTimestamp = null;
-
-        // Querying the Access table for the "created" access type
-        Cursor cursor = db.query(
-                "Access",
-                new String[]{"Timestamp"},  // We only need the Timestamp
-                "ProfileID = ? AND AccessType = ?",  // WHERE clause
-                new String[]{String.valueOf(profileId), "Created"},  // WHERE parameters
-                null, null, null
-        );
-
-        if (cursor != null && cursor.moveToFirst()) {
-            // Retrieve the timestamp
-            createdTimestamp = cursor.getString(cursor.getColumnIndex("Timestamp"));
-            cursor.close();
-        }
-
-        return createdTimestamp;  // Returns null if no 'created' entry is found
-    }
 
     public void deleteProfile(int profileId) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -90,12 +72,17 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put("ProfileID", profileId);
         values.put("AccessType", accessType);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd ' @ ' HH:mm:ss");
-        String currentTimestamp = dateFormat.format(new Date());
+        String currentTimestamp = getDateFormat();
 
         // Insert the formatted timestamp
         values.put("Timestamp", currentTimestamp);
         db.insert("Access", null, values);
+    }
+
+    public String getDateFormat() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd ' @ ' HH:mm:ss");
+        String currentTimestamp = dateFormat.format(new Date());
+        return currentTimestamp;
     }
 
     public List<Access> getAccessHistory(int profileId) {
@@ -127,9 +114,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 String name = cursor.getString(cursor.getColumnIndex("Name"));
                 String surname = cursor.getString(cursor.getColumnIndex("Surname"));
                 float gpa = cursor.getFloat(cursor.getColumnIndex("GPA"));
+                String created = cursor.getString(cursor.getColumnIndex("Created"));
 
                 // Create a new Profile object and add it to the list
-                Profile profile = new Profile(profileId, name, surname, gpa);
+                Profile profile = new Profile(profileId, name, surname, gpa, created);
                 profileList.add(profile);
             } while (cursor.moveToNext());
 
