@@ -72,22 +72,4 @@ public class ProfileAdapter extends ArrayAdapter<Profile> {
         return convertView;
     }
 
-//    // Method to return all profile names (Surname, Name)
-//    public List<String> getAllProfileNames() {
-//        List<String> profileNames = new ArrayList<>();
-//        for (Profile profile : profiles) {
-//            String fullName = profile.getSurname() + ", " + profile.getName();
-//            profileNames.add(fullName);
-//        }
-//        return profileNames;
-//    }
-//
-//    // Method to return all profile IDs
-//    public List<String> getAllProfileIds() {
-//        List<String> profileIds = new ArrayList<>();
-//        for (Profile profile : profiles) {
-//            profileIds.add(String.valueOf(profile.getProfileId()));
-//        }
-//        return profileIds;
-//    }
 }
