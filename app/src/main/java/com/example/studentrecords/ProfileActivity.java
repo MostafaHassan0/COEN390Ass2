@@ -78,7 +78,12 @@ public class ProfileActivity extends AppCompatActivity {
     private void loadProfile(int profileId) {
         Profile profile = dbHelper.getProfile(profileId);
         if (profile != null) {
-            userTextView.setText("    User Profile\nSurname: " + profile.getSurname() + "\nName: " + profile.getName() + "\nID: " + profile.getProfileId()+ "\nGPA: " + profile.getGpa() + "\nProfile Created: " + profile.getCreated());
+            userTextView.setText("    Student Profile\n" +
+                                    "Surname: " + profile.getSurname() +
+                                    "\nName: " + profile.getName() +
+                                    "\nID: " + profile.getProfileId() +
+                                    "\nGPA: " + profile.getGpa() +
+                                    "\nProfile Created: " + profile.getCreated());
         }
     }
 
