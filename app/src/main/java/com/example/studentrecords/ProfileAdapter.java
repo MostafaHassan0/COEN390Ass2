@@ -56,7 +56,7 @@ public class ProfileAdapter extends ArrayAdapter<Profile> {
         Profile profile = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, parent, false);
+            convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
         }
 
 

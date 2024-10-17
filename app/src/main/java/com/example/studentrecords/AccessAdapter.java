@@ -24,14 +24,12 @@ public class AccessAdapter extends ArrayAdapter<Access> {
         Access access = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, parent, false);
+            convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
         }
 
-        TextView accessTypeView = convertView.findViewById(android.R.id.text1);
-        TextView timestampView = convertView.findViewById(android.R.id.text2);
+        TextView TextView = convertView.findViewById(android.R.id.text1);
 
-        accessTypeView.setText(access.getAccessType());
-        timestampView.setText(access.getTimestamp());
+        TextView.setText(access.getTimestamp() + " " + access.getAccessType());
 
         return convertView;
     }

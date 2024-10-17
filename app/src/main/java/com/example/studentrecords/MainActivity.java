@@ -40,12 +40,18 @@ public class MainActivity extends AppCompatActivity {
             new InsertProfileDialogFragment().show(getSupportFragmentManager(), "InsertProfile");
         });
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Student Records");
+        }
+
+
+
+
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Profile profile = (Profile) adapter.getItem(position);
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             intent.putExtra("profileId", profile.getProfileId());
             startActivity(intent);
-           // addAccessTimestamp(profile.getProfileId(), "Opened");
         });
     }
 

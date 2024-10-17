@@ -42,6 +42,10 @@ public class ProfileActivity extends AppCompatActivity {
             dbHelper.deleteProfile(profileId);
             finish();
         });
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(profileId + " Profile");
+        }
     }
 
     @Override

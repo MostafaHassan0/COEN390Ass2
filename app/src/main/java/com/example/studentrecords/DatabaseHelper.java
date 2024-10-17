@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createProfileTable = "CREATE TABLE Profile (ProfileID INTEGER PRIMARY KEY, Name TEXT, Surname TEXT, GPA REAL)";
-        String createAccessTable = "CREATE TABLE Access (AccessID INTEGER PRIMARY KEY, ProfileID INTEGER, AccessType TEXT, Timestamp TIMESTAMP DEFAULT Current_Timestamp)";
+        String createAccessTable = "CREATE TABLE Access (AccessID INTEGER PRIMARY KEY, ProfileID INTEGER, AccessType TEXT, Timestamp TEXT)";
         db.execSQL(createProfileTable);
         db.execSQL(createAccessTable);
     }
@@ -90,6 +90,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put("ProfileID", profileId);
         values.put("AccessType", accessType);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd ' @ ' HH:mm:ss");
+        String currentTimestamp = dateFormat.format(new Date());
+
+        // Insert the formatted timestamp
+        values.put("Timestamp", currentTimestamp);
         db.insert("Access", null, values);
     }
 

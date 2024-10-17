@@ -62,12 +62,11 @@ public class InsertProfileDialogFragment extends DialogFragment {
 
         if (!name.isEmpty() && !surname.isEmpty() && profileId > 0 && gpa >= 0 && gpa <= 4.3) {
             if (dbHelper.getProfile(profileId) == null) { // checking if profileid already existes in db
-            Profile profile = new Profile(profileId, name, surname, gpa);
-            dbHelper.addProfile(profile);
-//            dbHelper.addAccess(profileId, "Created");
-            Toast.makeText(getActivity(), "Profile saved!", Toast.LENGTH_SHORT).show();
-            ((MainActivity) getActivity()).loadProfiles();
-            dismiss();
+                Profile profile = new Profile(profileId, name, surname, gpa);
+                dbHelper.addProfile(profile);
+                Toast.makeText(getActivity(), "Profile saved!", Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).loadProfiles();
+                dismiss();
             } else {
                 Toast.makeText(getActivity(), "Student ID already exists!", Toast.LENGTH_SHORT).show();
             }
